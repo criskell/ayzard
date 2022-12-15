@@ -23,9 +23,11 @@ class PostController extends Controller
         ];
     }
 
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return [
+            'data' => $post,
+        ];
     }
 
     public function update(Request $request, $id)
