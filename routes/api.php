@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\FeedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,5 @@ Route::group(['prefix' => 'auth', 'middleware' => 'guest'], function () {
 
 Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('posts', PostController::class);
+    Route::get('/feed', [FeedController::class, 'show']);
 });
