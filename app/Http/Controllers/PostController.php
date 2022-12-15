@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SavePostRequest;
+use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
+use App\Http\Requests\DestroyPostRequest;
 use App\Models\Post;
 
 class PostController extends Controller
 {
     public function index()
     {
-        //
+        $posts = Post::all();
+
+        return [
+            'data' => $posts,
+        ];
     }
 
     public function store(SavePostRequest $request)
@@ -30,13 +36,17 @@ class PostController extends Controller
         ];
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $post->update($request->only(['content']));
+
+        return response()->noContent();
     }
 
-    public function destroy($id)
+    public function destroy(DestroyPostRequest $request, Post $post)
     {
-        //
+        $post->delete();
+
+        return response()->noContent();
     }
 }
