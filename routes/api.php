@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,11 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
-Route::group(['middleware' => 'api', 'prefix' => 'auth'], function () {
-    Route::post('/login', [LoginController::class, 'login'])->name('auth.login');
-    Route::post('/register', [RegisterController::class, 'register'])->name('auth.register');
+Route::group(['prefix' => 'auth', 'middleware' => 'guest'], function () {
+    Route::post('/login', [LoginController::class, 'login'])->name('login');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register');
+});
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::apiResource('posts', PostController::class);
 });
