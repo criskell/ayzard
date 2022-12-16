@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\UserPostController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\UserPostController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\PostCommentController;
+use App\Http\Controllers\PostShareController;
 use App\Http\Controllers\CommentController;
 
 /*
@@ -31,6 +32,7 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::apiResource('posts', PostController::class);
     Route::apiSingleton('posts.like', PostLikeController::class)->creatable()->only(['store', 'destroy']);
+    Route::apiSingleton('posts.share', PostShareController::class)->creatable()->only(['store', 'destroy']);
     Route::apiResource('posts.comments', PostCommentController::class)->only(['index', 'store']);
 
     Route::apiResource('comments', CommentController::class)->except(['index', 'store']);
