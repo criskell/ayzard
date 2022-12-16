@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
+use App\Http\Requests\DestroyCommentRequest;
 use App\Models\Comment;
 use App\Models\Post;
 
@@ -49,11 +50,15 @@ class CommentController extends Controller
 
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        //
+        $comment->update($request->only(['content']));
+
+        return response()->noContent();
     }
 
-    public function destroy(Comment $comment)
+    public function destroy(DestroyCommentRequest $request, Comment $comment)
     {
-        //
+        $comment->delete();
+
+        return response()->noContent();
     }
 }
