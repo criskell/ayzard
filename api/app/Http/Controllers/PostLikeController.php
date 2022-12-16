@@ -12,7 +12,9 @@ class PostLikeController extends Controller
         $user = auth()->user();
 
         if (! $post->likes()->where('user_id', $user->id)->exists()) {
-            $user->likedPosts()->attach($post);
+            $post->likes()->create([
+                'user_id' => $user->id,
+            ]);
         }
     }
 

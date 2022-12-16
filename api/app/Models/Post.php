@@ -11,9 +11,9 @@ class Post extends Model
 
     protected $fillable = ['content'];
 
-    public function author()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'author_id');
+        return $this->belongsTo(User::class);
     }
 
     public function likes()

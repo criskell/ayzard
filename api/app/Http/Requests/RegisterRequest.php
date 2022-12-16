@@ -3,8 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules;
+use App\Models\User;
 
-class UpdatePostRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +15,7 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->is($this->post->author);
+        return true;
     }
 
     /**
@@ -24,7 +26,9 @@ class UpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'content' => 'required'
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', Rules\Password::defaults()],
         ];
     }
 }

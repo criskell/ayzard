@@ -2,49 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreatePostRequest;
-use App\Http\Requests\UpdatePostRequest;
-use App\Http\Requests\DestroyPostRequest;
+use App\Http\Requests\SavePostRequest;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 
 class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::all();
-
-        return [
-            'data' => $posts,
-        ];
-    }
-
-    public function store(CreatePostRequest $request)
-    {
-        $post = auth()->user()->posts()->create($request->only(['content']));
-
-        return [
-            'data' => [
-                'id' => $post->id,
-            ],
-        ];
+        return PostResource::collection(Post::paginate());
     }
 
     public function show(Post $post)
     {
-        return [
-            'data' => $post,
-        ];
+        return new PostResource($post);
     }
 
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(SavePostRequest $request, Post $post)
     {
+        $this->authorize('update', $post);
+
         $post->update($request->only(['content']));
 
         return response()->noContent();
     }
 
-    public function destroy(DestroyPostRequest $request, Post $post)
+    public function destroy(SavePostRequest $request, Post $post)
     {
+        $this->authorize('delete', $post);
+
         $post->delete();
 
         return response()->noContent();

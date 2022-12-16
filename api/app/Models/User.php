@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -40,13 +39,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function posts()
     {
-        return $this->hasMany(Post::class, 'author_id');
-    }
-
-    public function likedPosts()
-    {
-        return $this->belongsToMany(PostLike::class, 'post_likes', 'user_id', 'post_id')
-            ->withTimestamps();
+        return $this->hasMany(Post::class);
     }
 
     public function comments()

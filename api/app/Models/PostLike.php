@@ -9,6 +9,8 @@ class PostLike extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['user_id'];
+
     public function post()
     {
         return $this->belongsTo(Post::class);
