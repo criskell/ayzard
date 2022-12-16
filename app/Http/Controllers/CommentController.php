@@ -9,9 +9,15 @@ use App\Models\Post;
 
 class CommentController extends Controller
 {
-    public function index()
+    public function index(Post $post)
     {
-        //
+        $comments = $post->comments;
+
+        return [
+            'data' => [
+                'comments' => $comments,
+            ],
+        ];
     }
 
     public function store(StoreCommentRequest $request, Post $post)
