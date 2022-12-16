@@ -40,7 +40,11 @@ class CommentController extends Controller
 
     public function show(Comment $comment)
     {
-
+        return [
+            'data' => [
+                'comment' => $comment,
+            ],
+        ];
     }
 
     public function update(UpdateCommentRequest $request, Comment $comment)
