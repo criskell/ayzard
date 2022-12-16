@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\PostLikeController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,5 +29,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiSingleton('posts.like', PostLikeController::class)->creatable()->only([
         'store', 'destroy'
     ]);
+    Route::apiResource('posts.comments', CommentController::class)->shallow();
     Route::get('/feed', [FeedController::class, 'show']);
 });

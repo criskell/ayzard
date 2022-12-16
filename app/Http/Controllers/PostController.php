@@ -18,7 +18,7 @@ class PostController extends Controller
         ];
     }
 
-    public function store(SavePostRequest $request)
+    public function store(CreatePostRequest $request)
     {
         $post = auth()->user()->posts()->create($request->only(['content']));
 
