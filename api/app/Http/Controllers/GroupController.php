@@ -22,15 +22,9 @@ class GroupController extends Controller
         return new GroupResource($group);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
-     */
     public function show(Group $group)
     {
-        //
+        return new GroupResource($group);
     }
 
     /**
