@@ -65,4 +65,9 @@ class User extends Authenticatable implements JWTSubject
             'following_id'
         );
     }
+
+    public function groups()
+    {
+        return $this->hasMany(Group::class, 'creator_id');
+    }
 }

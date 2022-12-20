@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Http\Requests\SaveGroupRequest;
 use App\Http\Resources\GroupResource;
 
 class GroupController extends Controller
@@ -14,9 +15,11 @@ class GroupController extends Controller
         return GroupResource::collection($groups);
     }
 
-    public function store(Request $request)
+    public function store(SaveGroupRequest $request)
     {
-        //
+        $group = auth()->user()->groups()->create($request->only(['name', 'description']));
+
+        return new GroupResource($group);
     }
 
     /**
