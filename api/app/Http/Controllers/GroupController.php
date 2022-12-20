@@ -3,21 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
-use Illuminate\Http\Request;
+use App\Http\Resources\GroupResource;
 
 class GroupController extends Controller
 {
     public function index()
     {
-        //
+        $groups = Group::paginate();
+
+        return GroupResource::collection($groups);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //

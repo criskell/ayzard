@@ -11,6 +11,7 @@ use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostShareController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserFollowController;
+use App\Http\Controllers\GroupController;
 
 Route::group(['prefix' => 'auth', 'middleware' => 'guest'], function () {
     Route::post('/login', [LoginController::class, 'login'])->name('login');
@@ -29,6 +30,8 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('posts.comments', PostCommentController::class)->only(['index', 'store']);
 
     Route::apiResource('comments', CommentController::class)->except(['index', 'store']);
+
+    Route::apiResource('groups', GroupController::class);
 
     Route::get('/feed', [FeedController::class, 'show']);
 });
