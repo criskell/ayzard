@@ -20,6 +20,11 @@ class GroupController extends Controller
     {
         $group = auth()->user()->groups()->create($request->only(['name', 'description']));
 
+        $group->members()->create([
+            'user_id' => auth()->id(),
+            'is_admin' => true,
+        ]);
+
         return new GroupResource($group);
     }
 

@@ -11,9 +11,9 @@ class GroupMemberResource extends JsonResource
         return [
             'id' => $this->id,
             'created_at' => $this->created_at,
-            'user' => $this->user,
-            'group' => $this->group,
-            'is_admin' => $this->is_admin,
+            'user' => new UserResource($this->user),
+            'group' => new GroupResource($this->group),
+            'is_admin' => (bool) $this->is_admin,
         ];
     }
 }
