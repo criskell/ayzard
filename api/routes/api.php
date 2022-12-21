@@ -34,7 +34,13 @@ Route::middleware(['auth:api'])->group(function () {
         ->creatable()
         ->only(['show', 'store', 'destroy']);
 
-    Route::apiResource('groups.members', Group\MemberController::class);
+    Route::apiResource('groups.members', Group\MemberController::class)
+        ->except([
+            'store'
+        ])
+        ->parameters([
+            'member' => 'user'
+        ]);
 
     Route::apiResource('groups', Group\GroupController::class);
 

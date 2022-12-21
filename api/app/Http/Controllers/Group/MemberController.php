@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Group;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GroupMemberResource;
 use App\Models\Group;
+use App\Models\User;
+use App\Http\Requests\SaveMemberRequest;
 
 class MemberController extends Controller
 {
@@ -15,48 +17,28 @@ class MemberController extends Controller
         return GroupMemberResource::collection($members);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function show(Group $group, User $user)
     {
-        //
+        $member = $group->members()->where('user_id', $user->id)->firstOrFail();
+
+        return new GroupMemberResource($member);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update(SaveMemberRequest $request, Group $group, User $user)
     {
-        //
+        $member = $group->members()->where('user_id', $user->id)->firstOrFail();
+
+        $member->update($request->only(['is_admin']));
+
+        return new GroupMemberResource($member);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(Group $group, User $user)
     {
-        //
-    }
+        $member = $group->members()->where('user_id', $user->id)->firstOrFail();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $member->delete();
+
+        return response()->noContent();
     }
 }
