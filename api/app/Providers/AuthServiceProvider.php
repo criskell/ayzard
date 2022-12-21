@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Policies\CommentPolicy;
 use App\Policies\PostPolicy;
 use App\Policies\UserPolicy;
+use App\Policies\PagePolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
         Comment::class => CommentPolicy::class,
         Post::class => PostPolicy::class,
         User::class => UserPolicy::class,
+        Page::class => PagePolicy::class,
     ];
 
     /**

@@ -7,6 +7,7 @@ use App\Http\Controllers\User;
 use App\Http\Controllers\Post;
 use App\Http\Controllers\Comment;
 use App\Http\Controllers\Group;
+use App\Http\Controllers\Page;
 
 Route::group(['prefix' => 'auth', 'middleware' => 'guest'], function () {
     Route::post('/login', [Auth\LoginController::class, 'login'])->name('login');
@@ -45,4 +46,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('groups', Group\GroupController::class);
 
     Route::get('/feed', [Feed\FeedController::class, 'show']);
+
+    Route::apiResource('pages', Page\PageController::class);
 });

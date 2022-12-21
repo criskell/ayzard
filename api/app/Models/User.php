@@ -70,4 +70,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Group::class, 'creator_id');
     }
+
+    public function pages()
+    {
+        return $this->hasMany(Page::class);
+    }
 }
