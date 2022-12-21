@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Post;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
 use App\Http\Requests\SaveCommentRequest;
 use App\Models\Post;

@@ -1,37 +1,36 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\FeedController;
-use App\Http\Controllers\UserPostController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\PostLikeController;
-use App\Http\Controllers\PostCommentController;
-use App\Http\Controllers\PostShareController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\UserFollowController;
-use App\Http\Controllers\GroupController;
+use App\Http\Controllers\Auth;
+use App\Http\Controllers\Feed;
+use App\Http\Controllers\User;
+use App\Http\Controllers\Post;
+use App\Http\Controllers\Comment;
+use App\Http\Controllers\Group;
 
 Route::group(['prefix' => 'auth', 'middleware' => 'guest'], function () {
-    Route::post('/login', [LoginController::class, 'login'])->name('login');
-    Route::post('/register', [RegisterController::class, 'register'])->name('register');
+    Route::post('/login', [Auth\LoginController::class, 'login'])->name('login');
+    Route::post('/register', [Auth\RegisterController::class, 'register'])->name('register');
 });
 
 Route::middleware(['auth:api'])->group(function () {
-    Route::apiResource('users.posts', UserPostController::class)->only(['index', 'store']);
-    Route::apiSingleton('users.follow', UserFollowController::class)
+    Route::apiResource('users.posts', Post\UserPostController::class)->only(['index', 'store']);
+
+    Route::apiSingleton('users.follow', User\UserFollowController::class)
         ->creatable()
         ->only(['store', 'destroy']);
 
-    Route::apiResource('posts', PostController::class);
-    Route::apiSingleton('posts.like', PostLikeController::class)->creatable()->only(['store', 'destroy']);
-    Route::apiSingleton('posts.share', PostShareController::class)->creatable()->only(['store', 'destroy']);
-    Route::apiResource('posts.comments', PostCommentController::class)->only(['index', 'store']);
+    Route::apiResource('posts', Post\PostController::class)->shallow();
+    Route::apiSingleton('posts.like', Post\PostLikeController::class)->creatable()->only(['store', 'destroy']);
+    Route::apiSingleton('posts.share', Post\PostShareController::class)->creatable()->only(['store', 'destroy']);
+    Route::apiResource('posts.comments', Post\PostCommentController::class)->only(['index', 'store']);
 
-    Route::apiResource('comments', CommentController::class)->except(['index', 'store']);
+    Route::apiResource('comments', Comment\CommentController::class)->except(['index', 'store']);
 
-    Route::apiResource('groups', GroupController::class);
+    Route::apiResource('groups', Group\GroupController::class);
+    Route::apiSingleton('groups.join-request', Group\UserJoinRequestController::class)
+        ->creatable()
+        ->only(['show', 'store', 'destroy']);
 
-    Route::get('/feed', [FeedController::class, 'show']);
+    Route::get('/feed', [Feed\FeedController::class, 'show']);
 });

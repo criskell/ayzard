@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Group;
 
+use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Http\Requests\SaveGroupRequest;
 use App\Http\Resources\GroupResource;

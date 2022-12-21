@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('group_join_requests', function (Blueprint $table) {
             $table->id();
-            $table->enum('status', ['pending', 'approved', 'refused']);
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('group_id')->constrained('groups');
+            $table->unique(['user_id', 'group_id']);
             $table->timestamps();
         });
     }

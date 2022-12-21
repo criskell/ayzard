@@ -9,6 +9,8 @@ class GroupJoinRequest extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['user_id', 'group_id'];
+
     public function user()
     {
         return $this->belongsTo(User::class);

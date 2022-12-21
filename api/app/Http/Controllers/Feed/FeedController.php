@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Feed;
 
+use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\PostShare;
 use App\Http\Resources\PostResource;

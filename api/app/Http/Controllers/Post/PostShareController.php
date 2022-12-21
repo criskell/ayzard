@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Post;
 
+use App\Http\Controllers\Controller;
 use App\Models\PostShare;
 use App\Models\Post;
 

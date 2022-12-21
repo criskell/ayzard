@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Post;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\SavePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
