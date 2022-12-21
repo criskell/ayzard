@@ -27,24 +27,15 @@ class GroupController extends Controller
         return new GroupResource($group);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Group $group)
+    public function update(SaveGroupRequest $request, Group $group)
     {
-        //
+        $this->authorize('update', $group);
+
+        $group->update($request->only(['name', 'description']));
+
+        return response()->noContent();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Group $group)
     {
         //
