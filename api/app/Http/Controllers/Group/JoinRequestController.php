@@ -11,6 +11,10 @@ class JoinRequestController extends Controller
 {
     public function index(Group $group)
     {
+        $loggedMember = $group->members()->where('user_id', auth()->id())->first();
+
+        $this->authorize('admin', [$group, $loggedMember]);
+
         $joinRequests = $group->joinRequests;
 
         return GroupJoinRequestResource::collection($joinRequests);
@@ -18,20 +22,22 @@ class JoinRequestController extends Controller
 
     public function destroy(GroupJoinRequest $joinRequest)
     {
-        $joinRequest->delete();
+        $loggedMember = $group->members()->where('user_id', auth()->id())->first();
+
+        $this->authorize('admin', [$joinRequest->group, $loggedMember]);
 
         return response()->noContent();
     }
 
     public function approve(GroupJoinRequest $joinRequest)
     {   
-        $loggedMember = $group->members()->where('user_id', auth()->id())->first();
+        $loggedMember = $joinRequest->group->members()->where('user_id', auth()->id())->first();
 
         $this->authorize('admin', [$joinRequest->group, $loggedMember]);
 
         $joinRequest->group->members()->create([
             'is_admin' => false,
-            'user_id' => auth()->id(),
+            'user_id' => $joinRequest->user->id,
         ]);
 
         $joinRequest->delete();

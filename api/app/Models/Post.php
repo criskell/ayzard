@@ -10,7 +10,7 @@ class Post extends Model
 {
     use HasFactory, HasEagerLimit;
 
-    protected $fillable = ['content'];
+    protected $fillable = ['content', 'group_id'];
 
     public function user()
     {

@@ -13,13 +13,4 @@ class UserPostController extends Controller
     {
         return PostResource::collection($user->posts()->paginate());
     }
-
-    public function store(SavePostRequest $request, User $user)
-    {
-        $this->authorize('update', $user);
-
-        $post = $user->posts()->create($request->only(['content']));
-
-        return new PostResource($post);
-    }
 }

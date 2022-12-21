@@ -18,7 +18,7 @@ Route::middleware(['auth:api'])->group(function () {
         ->creatable()
         ->only(['store', 'destroy']);
 
-    Route::apiResource('users.posts', Post\UserPostController::class)->only(['index', 'store']);
+    Route::apiResource('users.posts', Post\UserPostController::class)->only(['index']);
     Route::apiResource('posts', Post\PostController::class)->shallow();
     Route::apiSingleton('posts.like', Post\PostLikeController::class)->creatable()->only(['store', 'destroy']);
     Route::apiSingleton('posts.share', Post\PostShareController::class)->creatable()->only(['store', 'destroy']);
