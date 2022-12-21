@@ -14,12 +14,11 @@ Route::group(['prefix' => 'auth', 'middleware' => 'guest'], function () {
 });
 
 Route::middleware(['auth:api'])->group(function () {
-    Route::apiResource('users.posts', Post\UserPostController::class)->only(['index', 'store']);
-
     Route::apiSingleton('users.follow', User\UserFollowController::class)
         ->creatable()
         ->only(['store', 'destroy']);
 
+    Route::apiResource('users.posts', Post\UserPostController::class)->only(['index', 'store']);
     Route::apiResource('posts', Post\PostController::class)->shallow();
     Route::apiSingleton('posts.like', Post\PostLikeController::class)->creatable()->only(['store', 'destroy']);
     Route::apiSingleton('posts.share', Post\PostShareController::class)->creatable()->only(['store', 'destroy']);
@@ -27,10 +26,15 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::apiResource('comments', Comment\CommentController::class)->except(['index', 'store']);
 
-    Route::apiResource('groups', Group\GroupController::class);
+    Route::delete('/group/join-requests/{join_request}', [Group\JoinRequestController::class, 'destroy']);
+    Route::post('/group/join-requests/{join_request}/approval', [Group\JoinRequestController::class, 'approve']);
+    Route::delete('/group/join-requests/{join_request}/approval', [Group\JoinRequestController::class, 'reject']);
+    Route::get('/groups/{group}/join-requests', [Group\JoinRequestController::class, 'index']);    
     Route::apiSingleton('groups.join-request', Group\UserJoinRequestController::class)
         ->creatable()
         ->only(['show', 'store', 'destroy']);
+
+    Route::apiResource('groups', Group\GroupController::class);
 
     Route::get('/feed', [Feed\FeedController::class, 'show']);
 });
