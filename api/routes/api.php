@@ -34,6 +34,8 @@ Route::middleware(['auth:api'])->group(function () {
         ->creatable()
         ->only(['show', 'store', 'destroy']);
 
+    Route::apiResource('groups.members', Group\MemberController::class);
+
     Route::apiResource('groups', Group\GroupController::class);
 
     Route::get('/feed', [Feed\FeedController::class, 'show']);

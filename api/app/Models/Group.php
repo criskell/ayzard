@@ -20,4 +20,9 @@ class Group extends Model
     {
         return $this->hasMany(GroupJoinRequest::class);
     }
+
+    public function members()
+    {
+        return $this->hasMany(GroupMember::class);
+    }
 }
