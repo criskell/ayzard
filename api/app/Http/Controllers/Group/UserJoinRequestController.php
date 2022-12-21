@@ -19,7 +19,7 @@ class UserJoinRequestController extends Controller
     public function store(Group $group)
     {
         $request = $group->joinRequests()->updateOrCreate([
-            'user_id' => auth()->user()->id,
+            'user_id' => auth()->id(),
         ]);
 
         return new GroupJoinRequestResource($request);

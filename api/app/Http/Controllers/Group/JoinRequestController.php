@@ -24,14 +24,27 @@ class JoinRequestController extends Controller
     }
 
     public function approve(GroupJoinRequest $joinRequest)
-    {
+    {   
+        $loggedMember = $group->members()->where('user_id', auth()->id())->first();
+
+        $this->authorize('admin', [$joinRequest->group, $loggedMember]);
+
+        $joinRequest->group->members()->create([
+            'is_admin' => false,
+            'user_id' => auth()->id(),
+        ]);
+
         $joinRequest->delete();
 
         return response()->noContent();
     }
 
-    public function reject(GroupJoinRequest $request)
+    public function reject(GroupJoinRequest $joinRequest)
     {
+        $loggedMember = $group->members()->where('user_id', auth()->id())->first();
+
+        $this->authorize('admin', [$joinRequest->group, $loggedMember]);
+
         $joinRequest->delete();
 
         return response()->noContent();
