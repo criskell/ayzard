@@ -48,4 +48,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/feed', [Feed\FeedController::class, 'show']);
 
     Route::apiResource('pages', Page\PageController::class);
+    Route::apiSingleton('pages.like', Page\PageLikeController::class)
+        ->creatable()
+        ->only(['store', 'destroy']);
 });

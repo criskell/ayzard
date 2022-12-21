@@ -11,7 +11,7 @@ class PageController extends Controller
 {
     public function index()
     {
-        $pages = Page::paginate();
+        $pages = Page::with(['user'])->withCount(['likes'])->paginate();
 
         return PageResource::collection($pages);
     }
@@ -25,6 +25,9 @@ class PageController extends Controller
 
     public function show(Page $page)
     {
+        $page->load('user');
+        $page->loadCount(['likes']);
+
         return new PageResource($page);
     }
 

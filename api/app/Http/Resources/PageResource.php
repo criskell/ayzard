@@ -14,6 +14,7 @@ class PageResource extends JsonResource
             'user' => new UserResource($this->whenLoaded('user')),
             'name' => $this->name,
             'description' => $this->description,
+            'likes_count' => $this->whenCounted('likes'),
         ];
     }
 }
