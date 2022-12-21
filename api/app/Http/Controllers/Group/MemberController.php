@@ -12,6 +12,8 @@ class MemberController extends Controller
 {
     public function index(Group $group)
     {
+        $this->authorize('member', $group);
+
         $members = $group->members()->paginate();
 
         return GroupMemberResource::collection($members);
@@ -19,6 +21,10 @@ class MemberController extends Controller
 
     public function show(Group $group, User $user)
     {
+        $loggedMember = $group->members()->where('user_id', auth()->id())->first();
+        
+        $this->authorize('member', [$group, $loggedMember]);
+
         $member = $group->members()->where('user_id', $user->id)->firstOrFail();
 
         return new GroupMemberResource($member);
@@ -26,6 +32,10 @@ class MemberController extends Controller
 
     public function update(SaveMemberRequest $request, Group $group, User $user)
     {
+        $loggedMember = $group->members()->where('user_id', auth()->id())->first();
+
+        $this->authorize('admin', [$group, $loggedMember]);
+
         $member = $group->members()->where('user_id', $user->id)->firstOrFail();
 
         $member->update($request->only(['is_admin']));
@@ -35,6 +45,10 @@ class MemberController extends Controller
 
     public function destroy(Group $group, User $user)
     {
+        $loggedMember = $group->members()->where('user_id', auth()->id())->first();
+
+        $this->authorize('admin', [$group, $loggedMember]);
+
         $member = $group->members()->where('user_id', $user->id)->firstOrFail();
 
         $member->delete();

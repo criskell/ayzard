@@ -35,11 +35,11 @@ Route::middleware(['auth:api'])->group(function () {
         ->only(['show', 'store', 'destroy']);
 
     Route::apiResource('groups.members', Group\MemberController::class)
+        ->parameters([
+            'members' => 'user',
+        ])
         ->except([
             'store'
-        ])
-        ->parameters([
-            'member' => 'user'
         ]);
 
     Route::apiResource('groups', Group\GroupController::class);
