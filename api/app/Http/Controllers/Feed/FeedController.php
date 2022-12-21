@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Feed;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\PostShare;
+use App\Models\GroupMember;
 use App\Http\Resources\PostResource;
 use Illuminate\Support\Facades\DB;
 
@@ -18,6 +19,9 @@ class FeedController extends Controller
             ->pluck('following_id')
             ->push($userFeedGenerator->id);
 
+        $feedAllowedGroupIds = GroupMember::where('user_id', $userFeedGenerator->id)
+            ->pluck('group_id');
+
         $sharedPosts = Post::select([
             'posts.*',
             'post_shares.created_at AS shared_at',
@@ -25,6 +29,7 @@ class FeedController extends Controller
             DB::raw('"shared" as type')
         ])
             ->whereIn('post_shares.user_id', $feedAllowedUserIds)
+            ->orWhereIn('posts.group_id', $feedAllowedGroupIds)
             ->join('post_shares', 'post_shares.post_id', '=', 'posts.id');
 
         $regularPosts = Post::select([
@@ -32,7 +37,7 @@ class FeedController extends Controller
             DB::raw('NULL as shared_at'),
             DB::raw('NULL as shared_by_id'),
             DB::raw('"regular" as type')
-        ])->whereIn('posts.user_id', $feedAllowedUserIds);
+        ])->whereIn('posts.user_id', $feedAllowedUserIds)->orWhereIn('posts.group_id', $feedAllowedGroupIds);
 
         $posts = $sharedPosts
             ->unionAll($regularPosts)
@@ -42,6 +47,7 @@ class FeedController extends Controller
         $posts->load([
             'user',
             'sharedBy',
+            'group',
             'comments' => function ($query) {
                 $query->latest()->take(15);
             }

@@ -20,6 +20,7 @@ class PostResource extends JsonResource
             'user' => new UserResource($this->whenLoaded('user')),
             'shared_at' => $this->whenNotNull($this->shared_at),
             'shared_by' => new UserResource($this->whenNotNull($this->whenLoaded('sharedBy'))),
+            'group' => new GroupResource($this->whenNotNull($this->whenLoaded('group'))),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
