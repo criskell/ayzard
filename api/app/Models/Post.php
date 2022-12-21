@@ -10,7 +10,7 @@ class Post extends Model
 {
     use HasFactory, HasEagerLimit;
 
-    protected $fillable = ['content', 'group_id'];
+    protected $fillable = ['content', 'group_id', 'page_id'];
 
     public function user()
     {
@@ -40,5 +40,10 @@ class Post extends Model
     public function group()
     {
         return $this->belongsTo(Group::class);
+    }
+
+    public function page()
+    {
+        return $this->belongsTo(Page::class);
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\SavePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\Group;
+use App\Models\Page;
 
 class PostController extends Controller
 {
@@ -25,8 +26,16 @@ class PostController extends Controller
             $this->authorize('member', [$group, $loggedMember]);
         }
 
+        $pageId = $request->query('page_id');
+
+        if ($pageId) {
+            $page = Page::findOrFail($pageId);
+            $this->authorize('update', $page);
+        }
+
         $data = $request->only(['content']) + [
             'group_id' => $groupId,
+            'page_id' => $pageId,
         ];
         $post = auth()->user()->posts()->create($data);
 
