@@ -16,9 +16,12 @@ class FeedController extends Controller
     {
         $userFeedGenerator = auth()->user();
 
+        $friendIds = $userFeedGenerator->friendsFromSource()->pluck('source_id')->merge($userFeedGenerator->friendsFromTarget()->pluck('target_id'));
+
         $feedAllowedUserIds = $userFeedGenerator->following()
             ->pluck('following_id')
-            ->push($userFeedGenerator->id);
+            ->push($userFeedGenerator->id)
+            ->merge($friendIds);
 
         $feedAllowedGroupIds = GroupMember::where('user_id', $userFeedGenerator->id)
             ->pluck('group_id');

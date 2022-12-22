@@ -75,4 +75,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Page::class);
     }
+
+    public function friendsFromSource()
+    {
+        return $this->hasMany(Friendship::class, 'target_id');
+    }
+
+    public function friendsFromTarget()
+    {
+        return $this->hasMany(Friendship::class, 'source_id');
+    }
 }

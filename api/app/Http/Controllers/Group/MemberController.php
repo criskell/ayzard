@@ -47,7 +47,11 @@ class MemberController extends Controller
     {
         $loggedMember = $group->members()->where('user_id', auth()->id())->first();
 
-        $this->authorize('admin', [$group, $loggedMember]);
+        $this->authorize('member', [$group, $loggedMember]);
+
+        if (! $user->is($loggedMember->user)) {
+            $this->authorize('admin', [$group, $loggedMember]);
+        }
 
         $member = $group->members()->where('user_id', $user->id)->firstOrFail();
 
