@@ -9,11 +9,14 @@ use App\Models\GroupMember;
 use App\Models\PageLike;
 use App\Http\Resources\PostResource;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class FeedController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
+        $search = $request->query('search', '');
+
         $userFeedGenerator = auth()->user();
 
         $friendIds = $userFeedGenerator->friendsFromSource()->pluck('source_id')->merge($userFeedGenerator->friendsFromTarget()->pluck('target_id'));
@@ -35,6 +38,7 @@ class FeedController extends Controller
             'post_shares.user_id AS shared_by_id',
             DB::raw('"shared" as type')
         ])
+            ->where('posts.content', 'LIKE', '%' . $search .'%')
             ->whereIn('post_shares.user_id', $feedAllowedUserIds)
             ->orWhereIn('posts.group_id', $feedAllowedGroupIds)
             ->orWhereIn('posts.page_id', $feedAllowedPageIds)
@@ -46,6 +50,7 @@ class FeedController extends Controller
             DB::raw('NULL as shared_by_id'),
             DB::raw('"regular" as type')
         ])
+            ->where('posts.content', 'LIKE', '%' . $search .'%')
             ->whereIn('posts.user_id', $feedAllowedUserIds)
             ->orWhereIn('posts.group_id', $feedAllowedGroupIds)
             ->orWhereIn('posts.page_id', $feedAllowedPageIds);
