@@ -51,4 +51,9 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiSingleton('pages.like', Page\PageLikeController::class)
         ->creatable()
         ->only(['store', 'destroy']);
+
+    Route::apiResource('users.friendships', User\UserFriendshipController::class)
+        ->parameters([
+            'friendships' => 'friend',
+        ]);
 });
